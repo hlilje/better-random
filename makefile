@@ -9,4 +9,4 @@ $(TARGET): $(TARGET).cpp
 	$(CXX) $(CPPFLAGS) -o $(TARGET) $(TARGET).cpp $(DEPS)
 
 clean:
-	rm -f *.o
+	rm -f *.o $(TARGET)
