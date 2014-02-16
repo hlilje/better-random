@@ -1,6 +1,8 @@
 CXX = g++
 CPPFLAGS = -Wall -Wextra -pedantic -std=c++11
-DEPS = rand.h rand.cpp
+TESTINC = test/TestU01/include
+TESTLIB = test/TestU01/libs
+DEPS = rand.hpp rand.cpp $(TESTINC)/unif01.h $(TESTINC)/ugfsr.h
 TARGET = main
 
 all: $(TARGET)

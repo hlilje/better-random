@@ -1,4 +1,4 @@
-#include "rand.h"
+#include "rand.hpp"
 
 int main(void)
 {
