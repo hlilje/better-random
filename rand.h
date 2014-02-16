@@ -1,8 +1,7 @@
 //#pragma once
 
-#include <cstdlib>
-#include <cstdio>
 #include <iostream>
+//#include <cstdlib> // rand
 //#include <random>
 
 class BetterRandom
