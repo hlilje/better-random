@@ -1,11 +1,19 @@
 #include "rand.hpp"
 
+using namespace std;
+
 int main(void)
 {
-    BetterRandom rand_gen = BetterRandom();
+    unsigned int seed = rand();
+    BetterRandom gen = BetterRandom(seed);
 
-    int next_rand = rand_gen.get_random_number();
-    std::cout << next_rand << std::endl;
+    mt19937 mt(seed);
+
+    for(int i=0; i<10; ++i)
+    {
+        cout << "BetterRandom produced: " << gen.get_rand() << endl;
+        cout << "MT produced:           " << mt() << endl;
+    }
 
     return 0;
 }

@@ -2,17 +2,19 @@
 
 using namespace std;
 
-BetterRandom::BetterRandom()
+BetterRandom::BetterRandom(unsigned long seed)
 {
-    //unif01_Gen* gen; // Generic generator to implement
-
-    unsigned long seed = 1;
-    unif01_Gen* MT = ugfsr_CreateMT19937_98(seed);
-    ugfsr_DeleteGen(MT);
+    _gen = ugfsr_CreateMT19937_98(seed);
 }
 
 BetterRandom::~BetterRandom()
 {
+    ugfsr_DeleteGen(_gen);
+}
+
+double BetterRandom::get_rand()
+{
+    return _gen->GetU01(_gen->param, _gen->state);
 }
 
 int BetterRandom::get_random_number()
