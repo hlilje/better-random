@@ -1,4 +1,4 @@
-#include "rand.hpp"
+#include "BetterRandom.hpp"
 
 using namespace std;
 

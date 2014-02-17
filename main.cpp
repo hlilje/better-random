@@ -1,13 +1,15 @@
-#include "rand.hpp"
+#include "BetterRandom.hpp"
+#include "CppRandom.hpp"
 
 using namespace std;
 
 int main(void)
 {
-    srand(time(NULL)); // Init random seed
+    srand(time(NULL)); // Seed rand
     unsigned int seed = rand(); 
 
     BetterRandom gen = BetterRandom(seed);
+    CppRandom cpp_gen = CppRandom(seed);
     mt19937 mt(seed);
 
     for(int i=0; i<10; ++i)
@@ -16,8 +18,15 @@ int main(void)
         cout << "MT produced:           " << mt() << endl;
     }
 
-    gen.test_ext_gen();
-    gen.test_gen();
+    cout << endl;
+
+    for(int i=0; i<8; ++i) // 8 c++ generators
+    {
+        cout << "C++ gen #" << i << " produced:   " << cpp_gen.get_bits(i) << endl;
+    }
+
+    //gen.test_ext_gen();
+    //gen.test_gen();
 
     return 0;
 }
