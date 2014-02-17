@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -pedantic -std=c++11
 TESTINC = test/TestU01/include
 TESTLIBS = -lmylib -lprobdist -ltestu01
-DEPS = rand.hpp rand.cpp $(TESTINC)/unif01.h $(TESTINC)/ugfsr.h
+DEPS = rand.hpp rand.cpp $(TESTINC)/unif01.h $(TESTINC)/ugfsr.h $(TESTINC)/bbattery.h
 TARGET = main
 
 all: $(TARGET)
