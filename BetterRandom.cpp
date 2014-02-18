@@ -1,33 +1,49 @@
 #include "BetterRandom.hpp"
 
+// Forward declarations
+unif01_Gen* BetterRandom::_gen;
+unif01_Gen* BetterRandom::_gen_tu01;
+unsigned long BetterRandom::_last_num;
+
 using namespace std;
 
 BetterRandom::BetterRandom(unsigned long seed)
 {
-    _gen = ugfsr_CreateMT19937_98(seed);
+    _gen = unif01_CreateExternGen01((char*)"custom", get_rand_double);
+    _gen_tu01 = ugfsr_CreateMT19937_98(seed);
 
-    _ext_gen = unif01_CreateExternGen01((char*)"custom", get_ext_rand);
+    _last_num = seed;
 }
 
 BetterRandom::~BetterRandom()
 {
-    ugfsr_DeleteGen(_gen);
-    unif01_DeleteExternGen01(_ext_gen);
+    unif01_DeleteExternGen01(_gen);
+    ugfsr_DeleteGen(_gen_tu01);
 }
 
-unsigned int BetterRandom::get_rand()
+double BetterRandom::get_rand_double()
 {
-    return _gen->GetBits(_gen->param, _gen->state); // [0, 2^32 - 1]
+    advance_state();
+    return (double)_last_num;
 }
 
-int BetterRandom::get_random_number()
+unsigned long BetterRandom::get_rand_long()
 {
-    return 4;
+    advance_state();
+    return _last_num;
 }
 
-void BetterRandom::test_ext_gen()
+unsigned int BetterRandom::get_tu01_rand()
 {
-    bbattery_SmallCrush(_ext_gen);
+    return _gen->GetBits(_gen_tu01->param, _gen_tu01->state);
+}
+
+void BetterRandom::advance_state()
+{
+    unsigned long x = _last_num << 2;
+    x = x ^ 18378283;
+    x = x >> 4;
+    _last_num = x;
 }
 
 void BetterRandom::test_gen()
@@ -35,8 +51,7 @@ void BetterRandom::test_gen()
     bbattery_SmallCrush(_gen);
 }
 
-double BetterRandom::get_ext_rand()
+void BetterRandom::test_tu01_gen()
 {
-    double x = 0.4;
-    return x;
+    bbattery_SmallCrush(_gen_tu01);
 }

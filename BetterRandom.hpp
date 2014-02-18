@@ -17,16 +17,19 @@ public:
     BetterRandom(unsigned long);
     ~BetterRandom();
 
-    unsigned int get_rand(); // Get random number from TestU01 generator
-    int get_random_number(); // Relevant
+    static double get_rand_double(void); // Must return double in [0, 1)
+    static unsigned long get_rand_long(void); // Should be [0, 2^32 - 1]
+    static unsigned int get_tu01_rand(void); // Get random number from TestU01 generator
 
-    void test_gen(); // Perform a TestU01 test on TestU01 gen
-    void test_ext_gen(); // Perform a TestU01 test on custom gen
+    static void test_gen(void); // Perform a TestU01 test on custom gen
+    static void test_tu01_gen(void); // Perform a TestU01 test on TestU01 gen
 
 private:
-    unif01_Gen* _gen; // TestU01 gen
-    unif01_Gen* _ext_gen; // Custom gen
+    static unif01_Gen* _gen; // Custom gen
+    static unif01_Gen* _gen_tu01; // TestU01 gen
 
-    // Static to be able to pass as func pointer in C
-    static double get_ext_rand(void); // Must return double in [0, 1)
+    static unsigned long _last_num; // Last generated value
+
+    // Move internal state forward one step
+    static void advance_state(void);
 };
