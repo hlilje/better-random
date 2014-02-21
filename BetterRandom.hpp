@@ -4,6 +4,7 @@
 #include <random>
 #include <cstdlib>
 #include <ctime>
+#include <cstdint>
 extern "C"
 {
 #include "unif01.h" // Generic
@@ -19,6 +20,7 @@ public:
 
     static double get_rand_double(void); // Must return double in [0, 1)
     static unsigned long get_rand_long(void); // Should be [0, 2^32 - 1]
+    static uint32_t get_rand_int(void); // Xorshift
     static unsigned int get_tu01_rand(void); // Get random number from TestU01 generator
 
     static void test_gen(void); // Perform a TestU01 test on custom gen
@@ -29,6 +31,8 @@ private:
     static unif01_Gen* _gen_tu01; // TestU01 gen
 
     static unsigned long _last_num; // Last generated value
+
+    static uint32_t _x, _y, _z, _w; // For Xorshift
 
     // Move internal state forward one step
     static void advance_state(void);

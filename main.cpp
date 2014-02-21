@@ -16,7 +16,7 @@ int main(void)
     {
         //cout << "BetterRandom produced: " << gen.get_rand_double() << endl;
         //cout << "MT produced:           " << mt() << endl;
-        cout << gen.get_rand_long() << endl;
+        cout << gen.get_rand_int() << endl;
     }
 
     //cout << endl;
