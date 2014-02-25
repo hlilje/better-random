@@ -74,6 +74,14 @@ void BetterRandom::test_gen_tu01()
     bbattery_SmallCrush(_gen_tu01);
 }
 
+void BetterRandom::test_bits_freq()
+{
+    // NULL to just print and not save results in datastructure
+    // N, n, r, s, L set according to BigCrush test
+    sstring_HammingWeight2(_gen_bits, NULL, 10, 10*10^9, 0, 3, 10^6);
+    //sstring_HammingWeight2(_gen_bits, NULL, 10, 10*10^9, 27, 3, 10^6);
+}
+
 void BetterRandom::delete_gens()
 {
     if(!_gens_deleted)

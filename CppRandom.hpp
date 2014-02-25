@@ -4,7 +4,8 @@
 extern "C"
 {
 #include "unif01.h" // Generic
-#include "bbattery.h"
+#include "bbattery.h" // Battery of tests
+#include "sstring.h" // Test strings of random bits
 }
 
 class CppRandom
@@ -17,8 +18,9 @@ public:
     static unsigned int get_rand_bits(int); // Get random uint from given gen index
     static unsigned int get_rand_bits_wrapper(); // Wrapper to pass to TU01 test
 
-    static void test_gen_01(void); // Perform a TestU01 test on c++ gen (double)
-    static void test_gen_bits(void); // Perform a TestU01 test on c++ gen (uint)
+    static void test_gen_01(void); // Perform TestU01 battery test on c++ gen (double)
+    static void test_gen_bits(void); // Perform TestU01 battery test on c++ gen (uint)
+    static void test_bits_freq(void); // Perform a Frequency Test (uint)
 
     static void delete_gens(void); // Manually delete gens before destructor
 

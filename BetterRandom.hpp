@@ -8,7 +8,8 @@ extern "C"
 {
 #include "unif01.h" // Generic
 #include "ugfsr.h" // GFSR etc.
-#include "bbattery.h"
+#include "bbattery.h" // Battery of tests
+#include "sstring.h" // Test strings of random bits
 }
 
 class BetterRandom
@@ -21,9 +22,10 @@ public:
     static unsigned int get_rand_bits(void); // Must return unsigned int in [0, 2^32 - 1]
     static unsigned int get_rand_tu01(void); // Get random number from TestU01 generator
 
-    static void test_gen_01(void); // Perform a TestU01 test on custom gen (double)
-    static void test_gen_bits(void); // Perform a TestU01 test on custom gen (uint)
-    static void test_gen_tu01(void); // Perform a TestU01 test on TestU01 gen
+    static void test_gen_01(void); // Perform TestU01 test battery on custom gen (double)
+    static void test_gen_bits(void); // Perform TestU01 test battery on custom gen (uint)
+    static void test_gen_tu01(void); // Perform TestU01 test battery on TestU01 gen
+    static void test_bits_freq(void); // Perform a Frequency Test (uint)
 
     static void delete_gens(void); // Manually delete gens before destructor
 
