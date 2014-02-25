@@ -84,9 +84,13 @@ void CppRandom::test_gen_bits()
 void CppRandom::test_bits_freq()
 {
     // NULL to just print and not save results in datastructure
+    // N, n, r, s, L set according to Crush test
+    sstring_HammingWeight2(_gen_bits, NULL, 100, pow(10,8), 0, 30, pow(10,6));
+    //sstring_HammingWeight2(_gen_bits, NULL, 30, pow(10,8), 20, 10, pow(10,6));
+
     // N, n, r, s, L set according to BigCrush test
-    sstring_HammingWeight2(_gen_bits, NULL, 10, 10*10^9, 0, 3, 10^6);
-    //sstring_HammingWeight2(_gen_bits, NULL, 10, 10*10^9, 27, 3, 10^6);
+    //sstring_HammingWeight2(_gen_bits, NULL, 10, pow(10,9), 0, 3, pow(10,6));
+    //sstring_HammingWeight2(_gen_bits, NULL, 10, pow(10,9), 27, 3, pow(10,6));
 }
 
 void CppRandom::delete_gens()
