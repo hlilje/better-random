@@ -1,5 +1,6 @@
 #include "BetterRandom.hpp"
 #include "CppRandom.hpp"
+#include <iostream>
 
 using namespace std;
 
@@ -8,16 +9,23 @@ int main(void)
     srand(time(NULL)); // Seed rand
     unsigned int seed = rand(); 
 
-    BetterRandom gen = BetterRandom(seed);
-    //CppRandom cpp_gen = CppRandom(seed);
-    //mt19937 mt(seed);
+    // Only one custom generator is allowed at a time
+    BetterRandom gen_custom = BetterRandom(seed);
+    cout << "================ CUSTOM BIT TEST BELOW ================" << endl << endl;
+    gen_custom.test_gen_bits();
+    gen_custom.delete_gens();
 
-    for(int i=0; i<10; ++i)
-    {
-        //cout << "BetterRandom produced: " << gen.get_rand_double() << endl;
-        //cout << "MT produced:           " << mt() << endl;
-        cout << gen.get_rand_int() << endl;
-    }
+    CppRandom gen_cpp = CppRandom(seed);
+    cout << "================ C++ BIT TEST BELOW ================" << endl;
+    gen_cpp.test_gen_bits();
+
+    //for(int i=0; i<10; ++i)
+    //{
+    //    //cout << "BetterRandom produced: " << gen.get_rand_double() << endl;
+    //    //cout << "MT produced:           " << mt() << endl;
+    //    cout << "BetterRandom: " << gen.get_rand_int() << endl;
+    //    cout << "Seed: " << seed << endl;
+    //}
 
     //cout << endl;
 
@@ -25,9 +33,6 @@ int main(void)
     //{
     //    cout << "C++ gen #" << i << " produced:   " << cpp_gen.get_bits(i) << endl;
     //}
-
-    //gen.test_gen();
-    //gen.test_tu01_gen();
 
     return 0;
 }
