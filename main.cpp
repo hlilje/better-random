@@ -12,7 +12,7 @@ int main(void)
     // Only one custom generator is allowed at a time
     BetterRandom gen_custom = BetterRandom(seed);
     cout << "================== CUSTOM BIT TEST BELOW ==================" << endl;
-    //gen_custom.test_gen_bits();
+    gen_custom.test_gen_bits();
     //gen_custom.test_bits_freq();
 
     for(int i=0; i<2000; ++i)

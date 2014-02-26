@@ -12,6 +12,8 @@ extern "C"
 #include "sstring.h" // Test strings of random bits
 }
 
+#define QSIZE 4096
+
 class BetterRandom
 {
 public:
@@ -38,6 +40,7 @@ private:
     static unsigned long _last_num; // TODO Last generated value
 
     static uint32_t _x, _y, _z, _w; // For Xorshift
+    static uint32_t Q[QSIZE], c; // For multiply with carry
 
     // Move internal state forward one step
     static void advance_state(void);
