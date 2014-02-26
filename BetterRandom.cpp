@@ -7,13 +7,13 @@ unif01_Gen* BetterRandom::_gen_01;
 unif01_Gen* BetterRandom::_gen_bits;
 unif01_Gen* BetterRandom::_gen_tu01;
 bool BetterRandom::_gens_deleted;
-unsigned int BetterRandom::_last_num;
+unsigned long BetterRandom::_last_num;
 uint32_t BetterRandom::_x, BetterRandom::_y, BetterRandom::_z, BetterRandom::_w;
 
-BetterRandom::BetterRandom(unsigned int seed)
+BetterRandom::BetterRandom(unsigned long seed)
 {
     _gen_01 = unif01_CreateExternGen01((char*)"xorshift", get_rand_01);
-    _gen_bits = unif01_CreateExternGenBits((char*) "xorshift", get_rand_bits);
+    _gen_bits = unif01_CreateExternGenBitsL((char*) "xorshift", get_rand_bits);
     _gen_tu01 = ugfsr_CreateMT19937_98(seed);
     _gens_deleted = false;
 
@@ -39,24 +39,30 @@ double BetterRandom::get_rand_01()
     return (double)_last_num; // TODO Get real double
 }
 
-unsigned int BetterRandom::get_rand_bits()
+unsigned long BetterRandom::get_rand_bits()
 {
     advance_state();
-    return (unsigned int)_w;
+    //return (unsigned long)_w;
+    return _last_num;
 }
 
-unsigned int BetterRandom::get_rand_tu01()
+unsigned long BetterRandom::get_rand_tu01()
 {
     return _gen_tu01->GetBits(_gen_tu01->param, _gen_tu01->state);
 }
 
 void BetterRandom::advance_state()
 {
-    uint32_t _t;
+    //uint32_t _t;
 
-    _t = _x ^ (_x << 11);
-    _x = _y; _y = _z; _z = _w;
-    _w = _w ^ (_w >> 19) ^ (_t ^ (_t >> 8));
+    //_t = _x ^ (_x << 11);
+    //_x = _y; _y = _z; _z = _w;
+    //_w = _w ^ (_w >> 19) ^ (_t ^ (_t >> 8));
+
+    unsigned long a = 42643801;
+    unsigned long c = 43112609;
+    unsigned long m = 57885161;
+    _last_num = (_last_num * a + c) % m;  
 }
 
 void BetterRandom::test_gen_01()
@@ -91,7 +97,7 @@ void BetterRandom::delete_gens()
     if(!_gens_deleted)
     {
         unif01_DeleteExternGen01(_gen_01);
-        unif01_DeleteExternGenBits(_gen_bits);
+        unif01_DeleteExternGenBitsL(_gen_bits);
         ugfsr_DeleteGen(_gen_tu01);
         _gens_deleted = true;
     }

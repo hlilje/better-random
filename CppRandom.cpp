@@ -15,7 +15,7 @@ ranlux24 CppRandom::_lux_24;
 ranlux48 CppRandom::_lux_48;
 bool CppRandom::_gens_deleted;
 
-CppRandom::CppRandom(unsigned int seed)
+CppRandom::CppRandom(unsigned long seed)
 {
     _min_std = minstd_rand(seed);
     _min_std0 = minstd_rand0(seed);
@@ -27,7 +27,7 @@ CppRandom::CppRandom(unsigned int seed)
     _lux_48 = ranlux48(seed);
 
     _gen_01 = unif01_CreateExternGen01((char*)"TODO", get_rand_01); // TODO
-    _gen_bits = unif01_CreateExternGenBits((char*)"C++11 Mersenne Twister", get_rand_bits_wrapper);
+    _gen_bits = unif01_CreateExternGenBitsL((char*)"C++11 Mersenne Twister", get_rand_bits_wrapper);
 }
 
 CppRandom::~CppRandom()
@@ -41,7 +41,7 @@ double CppRandom::get_rand_01()
     return 0.1; // TODO
 }
 
-unsigned int CppRandom::get_rand_bits(int gen)
+unsigned long CppRandom::get_rand_bits(int gen)
 {
     switch(gen)
     {
@@ -66,7 +66,7 @@ unsigned int CppRandom::get_rand_bits(int gen)
     }
 }
 
-unsigned int CppRandom::get_rand_bits_wrapper()
+unsigned long CppRandom::get_rand_bits_wrapper()
 {
     return get_rand_bits(2);
 }
@@ -98,7 +98,7 @@ void CppRandom::delete_gens()
     if(!_gens_deleted)
     {
         unif01_DeleteExternGen01(_gen_01);
-        unif01_DeleteExternGenBits(_gen_bits);
+        unif01_DeleteExternGenBitsL(_gen_bits);
         _gens_deleted = true;
     }
 }
