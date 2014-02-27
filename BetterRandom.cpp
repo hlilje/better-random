@@ -15,6 +15,8 @@ uint32_t BetterRandom::Q[QSIZE];
 uint32_t BetterRandom::c;
 #define PHI 0x9e3779b9
 
+hash<string> BetterRandom::_hasher;
+
 BetterRandom::BetterRandom(unsigned long seed)
 {
     _gen_01 = unif01_CreateExternGen01((char*)"custom", get_rand_01);
@@ -25,23 +27,25 @@ BetterRandom::BetterRandom(unsigned long seed)
     _last_num = seed;
 
     // Init xorshift to Wikipedia values
-    _x = 123456789;
-    _y = 362436069;
-    _z = 521288629;
+    //_x = 123456789;
+    //_y = 362436069;
+    //_z = 521288629;
     //_w = 88675123;
-    _w = seed; // Use seed to avoid identical series
+    //_w = seed; // Use seed to avoid identical series
 
     // Init multiply with carry according to Wikipedia
-    c = 362436;
-    uint32_t x = (uint32_t)seed;
-    int i;
+    //c = 362436;
+    //uint32_t x = (uint32_t)seed;
+    //int i;
 
-    Q[0] = x;
-    Q[1] = x + PHI;
-    Q[2] = x + PHI + PHI;
+    //Q[0] = x;
+    //Q[1] = x + PHI;
+    //Q[2] = x + PHI + PHI;
 
-    for (i = 3; i < QSIZE; i++)
-        Q[i] = Q[i - 3] ^ Q[i - 2] ^ PHI ^ i;
+    //for (i = 3; i < QSIZE; i++)
+    //    Q[i] = Q[i - 3] ^ Q[i - 2] ^ PHI ^ i;
+
+    _hasher = hash<string>();
 }
 
 BetterRandom::~BetterRandom()
@@ -60,8 +64,9 @@ unsigned long BetterRandom::get_rand_bits()
 {
     advance_state();
     //return (unsigned long)_w;
-    //return _last_num;
-    return (unsigned long)Q[(4095 + 1) & 4095];
+    //return (unsigned long)Q[(4095 + 1) & 4095];
+
+    return _last_num;
 }
 
 unsigned long BetterRandom::get_rand_tu01()
@@ -85,13 +90,21 @@ void BetterRandom::advance_state()
     //_last_num = (_last_num * a + c) % m;  
 
     // multiply with carry
-    uint32_t i = 4095;
-    uint64_t t;
+    //uint32_t i = 4095;
+    //uint64_t t;
 
-    i = (i + 1) & 4095;
-    t = (18705ULL * Q[i]) + c;
-    c = t >> 32;
-    Q[i] = 0xfffffffe - t;
+    //i = (i + 1) & 4095;
+    //t = (18705ULL * Q[i]) + c;
+    //c = t >> 32;
+    //Q[i] = 0xfffffffe - t;
+
+    // C++11 hash function
+    // TODO Segfaults at sknuth_MaxOft test
+    string s = to_string(_last_num);
+    for(int i=0; i<10; ++i)
+    {
+        _last_num = _hasher(s);
+    }
 }
 
 void BetterRandom::test_gen_01()

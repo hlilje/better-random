@@ -1,6 +1,7 @@
 //#pragma once
 
 #include <random>
+#include <functional> // Hash
 #include <cstdlib>
 #include <ctime>
 #include <cstdint>
@@ -41,6 +42,8 @@ private:
 
     static uint32_t _x, _y, _z, _w; // For Xorshift
     static uint32_t Q[QSIZE], c; // For multiply with carry
+
+    static std::hash<std::string> _hasher; // Holds the hash function
 
     // Move internal state forward one step
     static void advance_state(void);
