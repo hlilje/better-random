@@ -14,6 +14,7 @@ extern "C"
 }
 
 #define QSIZE 4096
+#define BUFFERSIZE 3 
 
 class BetterRandom
 {
@@ -41,9 +42,11 @@ private:
     static unsigned long _last_num; // TODO Last generated value
 
     static uint32_t _x, _y, _z, _w; // For Xorshift
-    static uint32_t Q[QSIZE], c; // For multiply with carry
+    static uint32_t _Q[QSIZE], _c; // For multiply with carry
 
     static std::hash<std::string> _hasher; // Holds the hash function
+
+    static unsigned long _buffer[BUFFERSIZE]; // To build up a buffer of random numbers
 
     // Move internal state forward one step
     static void advance_state(void);

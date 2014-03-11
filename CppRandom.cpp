@@ -29,7 +29,7 @@ CppRandom::CppRandom(unsigned long seed)
     _gen_01 = unif01_CreateExternGen01((char*)"TODO", get_rand_01); // TODO
     //_gen_bits = unif01_CreateExternGenBitsL((char*)"C++11 Mersenne Twister", get_rand_bits_wrapper);
 
-    _gen_bits = unif01_CreateExternGenBitsL((char*)"Randomly Choose C++11 Gen", get_rand_bits_wrapper);
+    _gen_bits = unif01_CreateExternGenBitsL((char*)"MT C++11 Gen", get_rand_bits_wrapper);
 }
 
 CppRandom::~CppRandom()
@@ -70,10 +70,10 @@ unsigned long CppRandom::get_rand_bits(int gen)
 
 unsigned long CppRandom::get_rand_bits_wrapper()
 {
-    //return get_rand_bits(2);
+    return get_rand_bits(2); // MT
     
-    srand(time(NULL));
-    return get_rand_bits(rand() % 8);
+    //srand(time(NULL));
+    //return get_rand_bits(rand() % 8);
 }
 
 void CppRandom::test_gen_01()

@@ -11,15 +11,15 @@ int main(void)
 
     // Only one custom generator is allowed at a time
     BetterRandom gen_custom = BetterRandom(seed);
-    cout << "================== CUSTOM BIT TEST BELOW ==================" << endl;
-    //gen_custom.test_gen_bits();
+    //cout << "================== CUSTOM BIT TEST BELOW ==================" << endl;
+    gen_custom.test_gen_bits();
     //gen_custom.test_bits_freq();
 
-    for(int i=0; i<2000; ++i)
-    {
-        cout << gen_custom.get_rand_bits() << " ";
-    }
-    cout << endl;
+    //for(int i=0; i<2000; ++i)
+    //{
+    //    cout << gen_custom.get_rand_bits() << " ";
+    //}
+    //cout << endl;
     gen_custom.delete_gens();
 
     //CppRandom gen_cpp = CppRandom(seed);

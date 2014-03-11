@@ -11,9 +11,11 @@ bool BetterRandom::_gens_deleted;
 unsigned long BetterRandom::_last_num;
 uint32_t BetterRandom::_x, BetterRandom::_y, BetterRandom::_z, BetterRandom::_w;
 
-uint32_t BetterRandom::Q[QSIZE];
-uint32_t BetterRandom::c;
+uint32_t BetterRandom::_Q[QSIZE];
+uint32_t BetterRandom::_c;
 #define PHI 0x9e3779b9
+
+unsigned long BetterRandom::_buffer[BUFFERSIZE];
 
 hash<string> BetterRandom::_hasher;
 
@@ -27,25 +29,25 @@ BetterRandom::BetterRandom(unsigned long seed)
     _last_num = seed;
 
     // Init xorshift to Wikipedia values
-    //_x = 123456789;
-    //_y = 362436069;
-    //_z = 521288629;
+    _x = 123456789;
+    _y = 362436069;
+    _z = 521288629;
     //_w = 88675123;
-    //_w = seed; // Use seed to avoid identical series
+    _w = seed; // Use seed to avoid identical series
 
     // Init multiply with carry according to Wikipedia
-    //c = 362436;
+    //_c = 362436;
     //uint32_t x = (uint32_t)seed;
     //int i;
 
-    //Q[0] = x;
-    //Q[1] = x + PHI;
-    //Q[2] = x + PHI + PHI;
+    //_Q[0] = x;
+    //_Q[1] = x + PHI;
+    //_Q[2] = x + PHI + PHI;
 
     //for (i = 3; i < QSIZE; i++)
-    //    Q[i] = Q[i - 3] ^ Q[i - 2] ^ PHI ^ i;
+    //    _Q[i] = _Q[i - 3] ^ _Q[i - 2] ^ PHI ^ i;
 
-    _hasher = hash<string>();
+    //_hasher = hash<string>();
 }
 
 BetterRandom::~BetterRandom()
@@ -63,10 +65,10 @@ double BetterRandom::get_rand_01()
 unsigned long BetterRandom::get_rand_bits()
 {
     advance_state();
-    //return (unsigned long)_w;
+    return (unsigned long)_w;
     //return (unsigned long)Q[(4095 + 1) & 4095];
+    //return _last_num;
 
-    return _last_num;
 }
 
 unsigned long BetterRandom::get_rand_tu01()
@@ -76,20 +78,41 @@ unsigned long BetterRandom::get_rand_tu01()
 
 void BetterRandom::advance_state()
 {
-    // xorshift
-    //uint32_t _t;
+    // XORSHIFT
+    uint32_t _t;
+    uint32_t _u;
+    uint32_t _v;
+    //for(int i=0; i<BUFFERSIZE; ++i)
+    //{
+        //_t = _x ^ (_x << 11);
+        //_x = _y; _y = _z; _z = _w;
+        //_w = _w ^ (_w >> 19) ^ (_t ^ (_t >> 8));
+        //_buffer[i] = _w;
 
-    //_t = _x ^ (_x << 11);
-    //_x = _y; _y = _z; _z = _w;
-    //_w = _w ^ (_w >> 19) ^ (_t ^ (_t >> 8));
+        _t = _x ^ (_x << 11);
+        _x = _y; _y = _z; _z = _w;
+        _w = _w ^ (_w >> 19) ^ (_t ^ (_t >> 8));
 
-    //unsigned long a = 42643801;
-    //unsigned long c = 43112609;
-    ////unsigned long m = 57885161;
-    //unsigned long m = 4000000007;
+        _u = _w & 0x0000FFFF;
+        _u = _u << 16;
+        _v = _w & 0xFFFF0000;
+        _v = _v >> 16;
+        _v = _v & 0x0000FFFF;
+        _w = _u | _v;
+    //}
+    
+    //_w = _buffer[rand() % BUFFERSIZE];
+
+    //string s = to_string(_w);
+    //_w = _hasher(s);
+
+    // LCG
+    //unsigned long a = 48271;
+    //unsigned long c = 0;
+    //unsigned long m = pow(2,31) - 1;
     //_last_num = (_last_num * a + c) % m;  
 
-    // multiply with carry
+    // MULTIPLY WITH CARRY
     //uint32_t i = 4095;
     //uint64_t t;
 
@@ -98,13 +121,13 @@ void BetterRandom::advance_state()
     //c = t >> 32;
     //Q[i] = 0xfffffffe - t;
 
-    // C++11 hash function
+    // C++11 HASH
     // TODO Segfaults at sknuth_MaxOft test
-    string s = to_string(_last_num);
-    for(int i=0; i<10; ++i)
-    {
-        _last_num = _hasher(s);
-    }
+    //string s = to_string(_last_num);
+    //for(int i=0; i<10; ++i)
+    //{
+    //    _last_num = _hasher(s);
+    //}
 }
 
 void BetterRandom::test_gen_01()
@@ -126,7 +149,8 @@ void BetterRandom::test_bits_freq()
 {
     // NULL to just print and not save results in datastructure
     // N, n, r, s, L set according to Crush test
-    sstring_HammingWeight2(_gen_bits, NULL, 100, pow(10,8), 0, 30, pow(10,6));
+    //sstring_HammingWeight2(_gen_bits, NULL, 100, pow(10,8), 0, 30, pow(10,6));
+    sstring_HammingWeight2(_gen_bits, NULL, 100, pow(10,6), 0, 30, pow(10,6));
     //sstring_HammingWeight2(_gen_bits, NULL, 30, pow(10,8), 20, 10, pow(10,6));
 
     // N, n, r, s, L set according to BigCrush test
