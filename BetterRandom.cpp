@@ -93,19 +93,19 @@ void BetterRandom::advance_state()
         _x = _y; _y = _z; _z = _w;
         _w = _w ^ (_w >> 19) ^ (t ^ (t >> 8));
 
-        u = _w & 0x000000FF;
-        u = u << 24;
-        v = _w & 0xFF000000;
-        v = v >> 24;
-        v = v & 0x000000FF;
-        _w = u | v;
+        //u = _w & 0x000000FF;
+        //u = u << 24;
+        //v = _w & 0xFF000000;
+        //v = v >> 24;
+        //v = v & 0x000000FF;
+        //_w = u | v;
 
-        //_u = _w & 0x0000FFFF;
-        //_u = _u << 16;
-        //_v = _w & 0xFFFF0000;
-        //_v = _v >> 16;
-        //_v = _v & 0x0000FFFF;
-        //_w = _u | _v;
+        u = _w & 0x0000FFFF;
+        u = u << 16;
+        v = _w & 0xFFFF0000;
+        v = v >> 16;
+        v = v & 0x0000FFFF;
+        _w = u | v;
     //}
     
     //_w = _buffer[rand() % BUFFERSIZE];
