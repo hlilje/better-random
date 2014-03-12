@@ -22,7 +22,7 @@ hash<string> BetterRandom::_hasher;
 BetterRandom::BetterRandom(unsigned long seed)
 {
     _gen_01 = unif01_CreateExternGen01((char*)"custom", get_rand_01);
-    _gen_bits = unif01_CreateExternGenBitsL((char*) "custom", get_rand_bits);
+    _gen_bits = unif01_CreateExternGenBitsL((char*) "Custom XORShift + Seed", get_rand_bits);
     _gen_tu01 = ugfsr_CreateMT19937_98(seed);
     _gens_deleted = false;
 
@@ -79,9 +79,9 @@ unsigned long BetterRandom::get_rand_tu01()
 void BetterRandom::advance_state()
 {
     // XORSHIFT
-    uint32_t _t;
-    uint32_t _u;
-    uint32_t _v;
+    uint32_t t;
+    uint32_t u;
+    uint32_t v;
     //for(int i=0; i<BUFFERSIZE; ++i)
     //{
         //_t = _x ^ (_x << 11);
@@ -89,16 +89,23 @@ void BetterRandom::advance_state()
         //_w = _w ^ (_w >> 19) ^ (_t ^ (_t >> 8));
         //_buffer[i] = _w;
 
-        _t = _x ^ (_x << 11);
+        t = _x ^ (_x << 11);
         _x = _y; _y = _z; _z = _w;
-        _w = _w ^ (_w >> 19) ^ (_t ^ (_t >> 8));
+        _w = _w ^ (_w >> 19) ^ (t ^ (t >> 8));
 
-        _u = _w & 0x0000FFFF;
-        _u = _u << 16;
-        _v = _w & 0xFFFF0000;
-        _v = _v >> 16;
-        _v = _v & 0x0000FFFF;
-        _w = _u | _v;
+        u = _w & 0x000000FF;
+        u = u << 24;
+        v = _w & 0xFF000000;
+        v = v >> 24;
+        v = v & 0x000000FF;
+        _w = u | v;
+
+        //_u = _w & 0x0000FFFF;
+        //_u = _u << 16;
+        //_v = _w & 0xFFFF0000;
+        //_v = _v >> 16;
+        //_v = _v & 0x0000FFFF;
+        //_w = _u | _v;
     //}
     
     //_w = _buffer[rand() % BUFFERSIZE];

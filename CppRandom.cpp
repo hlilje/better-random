@@ -20,16 +20,16 @@ CppRandom::CppRandom(unsigned long seed)
     _min_std = minstd_rand(seed);
     _min_std0 = minstd_rand0(seed);
     _mt = mt19937(seed);
-    _mt_64 = mt19937_64(seed);
+    //_mt_64 = mt19937_64(seed);
     _lux24_b = ranlux24_base(seed);
-    _lux48_b = ranlux48_base(seed);
+    //_lux48_b = ranlux48_base(seed);
     _lux_24 = ranlux24(seed);
-    _lux_48 = ranlux48(seed);
+    //_lux_48 = ranlux48(seed);
 
     _gen_01 = unif01_CreateExternGen01((char*)"TODO", get_rand_01); // TODO
     //_gen_bits = unif01_CreateExternGenBitsL((char*)"C++11 Mersenne Twister", get_rand_bits_wrapper);
 
-    _gen_bits = unif01_CreateExternGenBitsL((char*)"MT C++11 Gen", get_rand_bits_wrapper);
+    _gen_bits = unif01_CreateExternGenBitsL((char*)"Return 4", get_rand_bits_wrapper);
 }
 
 CppRandom::~CppRandom()
@@ -53,16 +53,16 @@ unsigned long CppRandom::get_rand_bits(int gen)
             return _min_std0();
         case 2:
             return _mt();
-        case 3:
-            return _mt_64();
+        //case 3:
+            //return _mt_64();
         case 4:
             return _lux24_b();
-        case 5:
-            return _lux48_b();
+        //case 5:
+            //return _lux48_b();
         case 6:
             return _lux_24();
-        case 7:
-            return _lux_48();
+        //case 7:
+            //return _lux_48();
         default:
             return 0;
     }
@@ -70,7 +70,8 @@ unsigned long CppRandom::get_rand_bits(int gen)
 
 unsigned long CppRandom::get_rand_bits_wrapper()
 {
-    return get_rand_bits(2); // MT
+    //return get_rand_bits(0);
+    return 4;
     
     //srand(time(NULL));
     //return get_rand_bits(rand() % 8);
