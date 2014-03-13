@@ -41,7 +41,8 @@ private:
 
     static unsigned long _last_num; // TODO Last generated value
 
-    static uint32_t _x, _y, _z, _w; // For Xorshift
+    static uint32_t _x, _y, _z, _w; // For XORShift
+    //static uint32_t _x, _y, _z, _w, _s; // For XORShift
     static uint32_t _Q[QSIZE], _c; // For multiply with carry
 
     static std::hash<std::string> _hasher; // Holds the hash function

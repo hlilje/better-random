@@ -10,6 +10,7 @@ bool BetterRandom::_gens_deleted;
 
 unsigned long BetterRandom::_last_num;
 uint32_t BetterRandom::_x, BetterRandom::_y, BetterRandom::_z, BetterRandom::_w;
+//uint32_t BetterRandom::_x, BetterRandom::_y, BetterRandom::_z, BetterRandom::_w, BetterRandom::_s;
 
 uint32_t BetterRandom::_Q[QSIZE];
 uint32_t BetterRandom::_c;
@@ -28,11 +29,12 @@ BetterRandom::BetterRandom(unsigned long seed)
 
     _last_num = seed;
 
-    // Init xorshift to Wikipedia values
+    // Init XORShift to Wikipedia values
     _x = 123456789;
     _y = 362436069;
     _z = 521288629;
     //_w = 88675123;
+    //_s = 88675123; // Addition to original algorithm
     _w = seed; // Use seed to avoid identical series
 
     // Init multiply with carry according to Wikipedia
@@ -78,8 +80,10 @@ unsigned long BetterRandom::get_rand_tu01()
 
 void BetterRandom::advance_state()
 {
+    //_s = _w; // Save last value
     // XORSHIFT
     uint32_t t, u, v;
+    //uint32_t t;
     //for(int i=0; i<BUFFERSIZE; ++i)
     //{
         //_t = _x ^ (_x << 11);
@@ -91,6 +95,14 @@ void BetterRandom::advance_state()
         _x = _y; _y = _z; _z = _w;
         _w = _w ^ (_w >> 19) ^ (t ^ (t >> 8));
 
+        // Passes all tests
+        //u = _w & 0x0000FFFF;
+        //u = u << 16;
+        //v = _w & 0xFFFF0000;
+        //v = v >> 16;
+        //v = v & 0x0000FFFF;
+        //_w = u | v;
+
         //u = _w & 0x000000FF;
         //u = u << 24;
         //v = _w & 0xFF000000;
@@ -98,11 +110,35 @@ void BetterRandom::advance_state()
         //v = v & 0x000000FF;
         //_w = u | v;
 
+        //u = _w & 0x00000FFF;
+        //u = u << 20;
+        //v = _w & 0xFFF00000;
+        //v = v >> 20;
+        //v = v & 0x00000FFF;
+        //_w = u | v;
+
+        // Passes all tests
+        //u = _w & 0x0F0F0F0F;
+        //u = u << 4;
+        //v = _w & 0xF0F0F0F0;
+        //v = v >> 4;
+        //v = v & 0x0FFFFFFF;
+        //_w = u | v;
+
+        //_w = _w ^ _s;
+
+        // Passes all tests
+        //u = _w & 0x0F0F0F0F;
+        //u = u << 4;
+        //v = _w & 0xF0F0F0F0;
+        //v = v >> 4;
+        //_w = u | v;
+
+        // Passes all tests
         u = _w & 0x0000FFFF;
         u = u << 16;
         v = _w & 0xFFFF0000;
         v = v >> 16;
-        v = v & 0x0000FFFF;
         _w = u | v;
     //}
     
