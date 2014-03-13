@@ -79,9 +79,7 @@ unsigned long BetterRandom::get_rand_tu01()
 void BetterRandom::advance_state()
 {
     // XORSHIFT
-    uint32_t t;
-    uint32_t u;
-    uint32_t v;
+    uint32_t t, u, v;
     //for(int i=0; i<BUFFERSIZE; ++i)
     //{
         //_t = _x ^ (_x << 11);
