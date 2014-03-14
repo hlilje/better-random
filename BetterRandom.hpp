@@ -1,5 +1,3 @@
-//#pragma once
-
 #include <random>
 #include <functional> // Hash
 #include <cstdlib>
@@ -12,9 +10,6 @@ extern "C"
 #include "bbattery.h" // Battery of tests
 #include "sstring.h" // Test strings of random bits
 }
-
-#define QSIZE 4096
-#define BUFFERSIZE 3 
 
 class BetterRandom
 {
@@ -39,15 +34,8 @@ private:
     static unif01_Gen* _gen_tu01; // TestU01 gen
     static bool _gens_deleted; // To avoid segfaulting by deleting twice
 
-    static unsigned long _last_num; // TODO Last generated value
-
+    //static unsigned long _last_num; // Last generated value
     static uint32_t _x, _y, _z, _w; // For XORShift
-    //static uint32_t _x, _y, _z, _w, _s; // For XORShift
-    static uint32_t _Q[QSIZE], _c; // For multiply with carry
-
-    static std::hash<std::string> _hasher; // Holds the hash function
-
-    static unsigned long _buffer[BUFFERSIZE]; // To build up a buffer of random numbers
 
     // Move internal state forward one step
     static void advance_state(void);

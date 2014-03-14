@@ -5,6 +5,8 @@ using namespace std;
 // Forward declarations
 unif01_Gen* CppRandom::_gen_01;
 unif01_Gen* CppRandom::_gen_bits;
+bool CppRandom::_gens_deleted;
+
 minstd_rand CppRandom::_min_std;
 minstd_rand0 CppRandom::_min_std0;
 mt19937 CppRandom::_mt;
@@ -13,10 +15,10 @@ ranlux24_base CppRandom::_lux24_b;
 ranlux48_base CppRandom::_lux48_b;
 ranlux24 CppRandom::_lux_24;
 ranlux48 CppRandom::_lux_48;
-bool CppRandom::_gens_deleted;
 
 CppRandom::CppRandom(unsigned long seed)
 {
+    // Commented out generators segfaults due to 64 bit
     _min_std = minstd_rand(seed);
     _min_std0 = minstd_rand0(seed);
     _mt = mt19937(seed);
@@ -29,7 +31,7 @@ CppRandom::CppRandom(unsigned long seed)
     _gen_01 = unif01_CreateExternGen01((char*)"TODO", get_rand_01); // TODO
     //_gen_bits = unif01_CreateExternGenBitsL((char*)"C++11 Mersenne Twister", get_rand_bits_wrapper);
 
-    _gen_bits = unif01_CreateExternGenBitsL((char*)"Return 4", get_rand_bits_wrapper);
+    _gen_bits = unif01_CreateExternGenBitsL((char*)"C++ Mersenne Twister", get_rand_bits_wrapper);
 }
 
 CppRandom::~CppRandom()
@@ -40,7 +42,7 @@ CppRandom::~CppRandom()
 
 double CppRandom::get_rand_01()
 {
-    return 0.1; // TODO
+    return 0.4; // TODO
 }
 
 unsigned long CppRandom::get_rand_bits(int gen)
@@ -70,11 +72,7 @@ unsigned long CppRandom::get_rand_bits(int gen)
 
 unsigned long CppRandom::get_rand_bits_wrapper()
 {
-    //return get_rand_bits(0);
-    return 4;
-    
-    //srand(time(NULL));
-    //return get_rand_bits(rand() % 8);
+    return get_rand_bits(2); // mt
 }
 
 void CppRandom::test_gen_01()

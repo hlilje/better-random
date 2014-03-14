@@ -1,5 +1,3 @@
-//#pragma once
-
 #include <random>
 extern "C"
 {
@@ -16,7 +14,7 @@ public:
 
     static double get_rand_01(void);
     static unsigned long get_rand_bits(int); // Get random uint from given gen index
-    static unsigned long get_rand_bits_wrapper(); // Wrapper to pass to TU01 test
+    static unsigned long get_rand_bits_wrapper(void); // Wrapper to pass to TU01 test
 
     static void test_gen_01(void); // Perform TestU01 battery test on c++ gen (double)
     static void test_gen_bits(void); // Perform TestU01 battery test on c++ gen (uint)
