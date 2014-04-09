@@ -31,7 +31,7 @@ CppRandom::CppRandom(unsigned long seed)
     _gen_01 = unif01_CreateExternGen01((char*)"TODO", get_rand_01); // TODO
     //_gen_bits = unif01_CreateExternGenBitsL((char*)"C++11 Mersenne Twister", get_rand_bits_wrapper);
 
-    _gen_bits = unif01_CreateExternGenBitsL((char*)"C++ Mersenne Twister", get_rand_bits_wrapper);
+    _gen_bits = unif01_CreateExternGenBitsL((char*)"mt19937", get_rand_bits_wrapper);
 }
 
 CppRandom::~CppRandom()
@@ -105,4 +105,11 @@ void CppRandom::delete_gens()
         unif01_DeleteExternGenBitsL(_gen_bits);
         _gens_deleted = true;
     }
+}
+
+void CppRandom::time_gen()
+{
+    // long n = number of calls to gen
+    // lebool fU01 = TRUE for GetU01 test, FALSE for GetBits
+    unif01_TimerGenWr(_gen_bits, pow(2, 28), FALSE);
 }

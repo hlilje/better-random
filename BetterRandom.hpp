@@ -25,6 +25,8 @@ public:
     static void test_gen_bits(void); // Perform TestU01 test battery on custom gen (uint)
     static void test_gen_tu01(void); // Perform TestU01 test battery on TestU01 gen
     static void test_bits_freq(void); // Perform a Frequency Test (uint)
+    
+    static void time_gen(void); // Use TestU01 to time a generator
 
     static void delete_gens(void); // Manually delete gens before destructor
 

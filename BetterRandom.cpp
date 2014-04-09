@@ -130,3 +130,10 @@ void BetterRandom::delete_gens()
         _gens_deleted = true;
     }
 }
+
+void BetterRandom::time_gen()
+{
+    // long n = number of calls to gen
+    // lebool fU01 = TRUE for GetU01 test, FALSE for GetBits
+    unif01_TimerGenWr(_gen_bits, pow(2, 28), FALSE);
+}
